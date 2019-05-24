@@ -75,6 +75,11 @@ public class TelaCadastro extends javax.swing.JFrame {
         });
 
         btn_atualizar.setText("Atualizar");
+        btn_atualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_atualizarActionPerformed(evt);
+            }
+        });
 
         btn_deletar.setText("Deletar");
         btn_deletar.addActionListener(new java.awt.event.ActionListener() {
@@ -313,6 +318,26 @@ public class TelaCadastro extends javax.swing.JFrame {
             text_uf.setText(c.getUf());
         }
     }//GEN-LAST:event_btn_buscarCEPActionPerformed
+
+    private void btn_atualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_atualizarActionPerformed
+
+        String nome = Text_cidade.getText();// pegando o campo da tela, campo cidade
+        String cep = Formatte_cep.getText();// pegando o campo da tela, campo cep
+        String uf = text_uf.getText();// pegando o campo da tela, campo uf
+        
+         Cidades c = new Cidades(nome, uf, cep);
+
+        try {
+            if (cadastro.update(c)) {
+                JOptionPane.showMessageDialog(null, "Cidade atualizada com sucesso!");
+                limparTela();
+            } else {
+                JOptionPane.showMessageDialog(null, "Falha ao atualizar");
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, "Falha ao abrir arquivo!");
+        }
+    }//GEN-LAST:event_btn_atualizarActionPerformed
 
     /**
      * @param args the command line arguments

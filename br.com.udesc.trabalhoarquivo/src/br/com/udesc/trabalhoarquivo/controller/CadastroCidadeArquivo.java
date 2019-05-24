@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class CadastroCidadeArquivo {
 
-    private File arquivo;//criar um arquivo 
+    private File arquivo;//criar um arquivo arquivo aonde sera salvo a lista de cidades
 
     public CadastroCidadeArquivo() throws IOException {
         //inicializar o arquivo
@@ -45,6 +45,7 @@ public class CadastroCidadeArquivo {
         cidades.add(c);
         ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
         out.writeObject(cidades);
+        out.close();
         return true;
     }
 
@@ -53,11 +54,11 @@ public class CadastroCidadeArquivo {
         //abrir o arquivo "ler"
         //entrada de dados input
 
-        if (arquivo.length() > 0) {//verificar se o arquivo tem alguma coisa, se tiver ler ele
+        if (arquivo.length() > 0) {//verificar se o arquivo tem alguma coisa salva nele, se tiver ler ele
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(arquivo));
-            return (List<Cidades>) in.readObject();
+            return (List<Cidades>) in.readObject();//gest converter a lista pra um objeto
         } else {
-            return new ArrayList<>();//quer dizer que não tem nada no arquivo da ligado mano :(
+            return new ArrayList<>();//quer dizer que não tem nada no arquivo da ligado mano :( criar uma nova lista de elementos
         }
     }
 
@@ -83,7 +84,18 @@ public class CadastroCidadeArquivo {
         return null;
     }
 
-    public boolean update(Cidades c) {
+    public boolean update(Cidades c) throws IOException, FileNotFoundException, ClassNotFoundException {
+        List<Cidades> cidades = read();
+
+        for (int i = 0; i < cidades.size(); i++) {
+            if (cidades.get(i).getCep().equalsIgnoreCase(c.getCep())) {
+                cidades.set(i, c);
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
+                out.writeObject(cidades);
+                out.close();
+                return true;
+            }
+        }
         return false;
     }
 
@@ -96,6 +108,7 @@ public class CadastroCidadeArquivo {
                 
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
                 out.writeObject(cidades);
+                out.close();
                 return true;
             }
         }

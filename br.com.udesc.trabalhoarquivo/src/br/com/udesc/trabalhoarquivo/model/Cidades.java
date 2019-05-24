@@ -12,7 +12,7 @@ import java.util.Objects;
  * @versão 01 desenvolvimento rj
  * @author Robson de Jesus
  */
-public class Cidades implements Serializable{
+public class Cidades implements Serializable{//interface de marcação
     
     private String nome;
     private String uf;
