@@ -5,30 +5,25 @@
  */
 package br.com.udesc.trabalhoarquivo.model;
 
+import java.util.Objects;
+
 /**
- *
+ * @versão 01 desenvolvimento rj
  * @author Robson de Jesus
  */
 public class Cidades {
     
-    //atributos principais da model cidade
     private String nome;
-    private int cep;
     private String uf;
-    private long left;
-    private long right;
+    private String cep;
 
-    //construtor cidades vazio 
     public Cidades() {
     }
 
-     //construtor cidades com seus atributos da classe
-    public Cidades(String nome, int cep, String uf, long left, long right) {
+    public Cidades(String nome, String uf, String cep) {
         this.nome = nome;
-        this.cep = cep;
         this.uf = uf;
-        this.left = left;
-        this.right = right;
+        this.cep = cep;
     }
 
     public String getNome() {
@@ -39,14 +34,6 @@ public class Cidades {
         this.nome = nome;
     }
 
-    public int getCep() {
-        return cep;
-    }
-
-    public void setCep(int cep) {
-        this.cep = cep;
-    }
-
     public String getUf() {
         return uf;
     }
@@ -55,33 +42,51 @@ public class Cidades {
         this.uf = uf;
     }
 
-    public long getLeft() {
-        return left;
+    public String getCep() {
+        return cep;
     }
 
-    public void setLeft(long left) {
-        this.left = left;
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
-    public long getRight() {
-        return right;
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 17 * hash + Objects.hashCode(this.nome);
+        hash = 17 * hash + Objects.hashCode(this.uf);
+        hash = 17 * hash + Objects.hashCode(this.cep);
+        return hash;
     }
 
-    public void setRight(long right) {
-        this.right = right;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cidades other = (Cidades) obj;
+        if (!Objects.equals(this.nome, other.nome)) {
+            return false;
+        }
+        if (!Objects.equals(this.uf, other.uf)) {
+            return false;
+        }
+        if (!Objects.equals(this.cep, other.cep)) {
+            return false;
+        }
+        return true;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "Cidades{" + "nome=" + nome + ", uf=" + uf + ", cep=" + cep + '}';
+    }
+
+   
 }
