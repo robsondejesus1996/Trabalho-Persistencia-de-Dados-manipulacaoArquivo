@@ -17,6 +17,7 @@ public class CadastroCidade {
 
     private final List<Cidades> cidades; // minha lista de cidades
 
+    
     public CadastroCidade() {
         cidades = new ArrayList<>();
     }

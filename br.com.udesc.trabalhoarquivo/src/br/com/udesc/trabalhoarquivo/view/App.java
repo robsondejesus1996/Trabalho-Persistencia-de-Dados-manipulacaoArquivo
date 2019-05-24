@@ -6,28 +6,29 @@
 package br.com.udesc.trabalhoarquivo.view;
 
 import br.com.udesc.trabalhoarquivo.controller.CadastroCidade;
+import br.com.udesc.trabalhoarquivo.controller.CadastroCidadeArquivo;
 import br.com.udesc.trabalhoarquivo.model.Cidades;
+import java.io.IOException;
 
 /**
  *
  * @author Robson de Jesu
  */
 public class App {
+    
+    
+    
+    //sempre teste aqui antes de jogar para a interface
 
     public static void main(String[] args) {
-        CadastroCidade cadastro = new CadastroCidade();
-
-        Cidades c1 = new Cidades("Robson ", "sc", "1111-1111");
-
-        Cidades c2 = new Cidades("Joao ", "or", "2111-1111");
-        
-        if(cadastro.create(c1)){
-            System.out.println("Salvo com sucesso");
+        try {
+            CadastroCidadeArquivo cadastro = new CadastroCidadeArquivo();
+            
+            //cadastro.create(new Cidades("Curitiba", "0000-0000", "PR"));
+            System.out.println(cadastro.read());
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
         }
-        if(cadastro.create(c2)){
-            System.out.println("Salvo com sucesso");
-        }
-        System.out.println(cadastro.read());
     }
 
 }

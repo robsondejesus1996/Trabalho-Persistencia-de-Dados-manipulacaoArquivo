@@ -5,13 +5,14 @@
  */
 package br.com.udesc.trabalhoarquivo.model;
 
+import java.io.Serializable;//classes de entraga e saída de arquivo
 import java.util.Objects;
 
 /**
  * @versão 01 desenvolvimento rj
  * @author Robson de Jesus
  */
-public class Cidades {
+public class Cidades implements Serializable{
     
     private String nome;
     private String uf;

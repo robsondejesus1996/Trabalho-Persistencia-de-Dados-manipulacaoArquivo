@@ -6,7 +6,9 @@
 package br.com.udesc.trabalhoarquivo.view;
 
 import br.com.udesc.trabalhoarquivo.controller.CadastroCidade;
+import br.com.udesc.trabalhoarquivo.controller.CadastroCidadeArquivo;
 import br.com.udesc.trabalhoarquivo.model.Cidades;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,10 +17,14 @@ import javax.swing.JOptionPane;
  */
 public class TelaCadastro extends javax.swing.JFrame {
 
-    private CadastroCidade cadastro;
+    private CadastroCidadeArquivo cadastro;
     
     public TelaCadastro() {
-        cadastro = new CadastroCidade();//inicializar com o servico de cadastro
+        try{
+            cadastro = new CadastroCidadeArquivo(); //inicializar com o servico de cadastro
+        }catch(IOException ex){
+            JOptionPane.showMessageDialog(null, "Ocorreu uma falha ao abrir o arquivo!");
+        }
         initComponents();
     }
 
@@ -44,7 +50,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         text_uf = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btn_buscarCEP = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,7 +104,7 @@ public class TelaCadastro extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Nome Cidades:", "CEP Cidades", "UF da Cidade"
+                "Nome Cidades", "CEP Cidades", "UF da Cidade"
             }
         ) {
             Class[] types = new Class [] {
@@ -126,10 +132,10 @@ public class TelaCadastro extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(2).setPreferredWidth(50);
         }
 
-        jButton1.setText("Buscar pelo CEP");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_buscarCEP.setText("Buscar pelo CEP");
+        btn_buscarCEP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_buscarCEPActionPerformed(evt);
             }
         });
 
@@ -169,7 +175,7 @@ public class TelaCadastro extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btn_buscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(btn_buscarCEP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -195,7 +201,7 @@ public class TelaCadastro extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(Formatte_cep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1)))
+                        .addComponent(btn_buscarCEP)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -228,12 +234,18 @@ public class TelaCadastro extends javax.swing.JFrame {
         
         Cidades c = new Cidades(nome, uf, cep);
         
-        if(cadastro.create(c)){
+        try{
+            if(cadastro.create(c)){
             JOptionPane.showMessageDialog(null, "Cadastrado com sucesso");
             limparTela();
         }else{
             JOptionPane.showMessageDialog(null, "Já existe uma cidade com esse CEP!");
         }
+        }catch(IOException |ClassNotFoundException ex){
+            JOptionPane.showMessageDialog(null, "Ocorreu uma falha ao abrir o arquivo!");
+            
+        }
+        
     }//GEN-LAST:event_btn_salvarActionPerformed
 
     private void btn_limparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_limparActionPerformed
@@ -245,7 +257,13 @@ public class TelaCadastro extends javax.swing.JFrame {
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
         
-        Cidades c = cadastro.buscar(Text_cidade.getText());
+        Cidades c = null;
+                
+            try{
+                c = cadastro.buscar(Text_cidade.getText());
+            }catch(IOException | ClassNotFoundException ex){
+                JOptionPane.showMessageDialog(null, "Ocorreu uma falha ao abrir o arquivo!");
+            }
         
         if(c == null){
             JOptionPane.showMessageDialog(null, "Não existe nenhuma cidade com esse nome!");
@@ -264,26 +282,37 @@ public class TelaCadastro extends javax.swing.JFrame {
         
         
         Cidades c = new Cidades(nome, uf, cep);
-        if(cadastro.delete(c)){
+        
+        try{
+            if(cadastro.delete(c)){
             JOptionPane.showMessageDialog(null, "Removido com sucesso");
             limparTela();
         }else{
             JOptionPane.showMessageDialog(null, "Falha ao deletar");
         }
+        }catch(IOException | ClassNotFoundException ex){
+            JOptionPane.showMessageDialog(null, "Ocorreu uma falha ao abrir o arquivo!");
+        }
     }//GEN-LAST:event_btn_deletarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_buscarCEPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarCEPActionPerformed
 
-        Cidades c = cadastro.buscarCEP(Formatte_cep.getText());
-
-        if (c == null) {
+        Cidades c = null;
+                
+            try{
+                c = cadastro.buscarCEP(Formatte_cep.getText());
+            }catch(IOException | ClassNotFoundException ex){
+                JOptionPane.showMessageDialog(null, "Ocorreu uma falha ao abrir o arquivo!");
+            }
+        
+        if(c == null){
             JOptionPane.showMessageDialog(null, "Não existe nenhuma cidade com esse CEP!");
-        } else {
+        }else{
             Text_cidade.setText(c.getNome());
             Formatte_cep.setText(c.getCep());
             text_uf.setText(c.getUf());
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btn_buscarCEPActionPerformed
 
     /**
      * @param args the command line arguments
@@ -325,10 +354,10 @@ public class TelaCadastro extends javax.swing.JFrame {
     private javax.swing.JTextField Text_cidade;
     private javax.swing.JButton btn_atualizar;
     private javax.swing.JButton btn_buscar;
+    private javax.swing.JButton btn_buscarCEP;
     private javax.swing.JButton btn_deletar;
     private javax.swing.JButton btn_limpar;
     private javax.swing.JButton btn_salvar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
