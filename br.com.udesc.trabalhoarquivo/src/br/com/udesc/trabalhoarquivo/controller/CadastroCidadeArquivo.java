@@ -26,7 +26,7 @@ public class CadastroCidadeArquivo {
 
     public CadastroCidadeArquivo() throws IOException {
         //inicializar o arquivo
-        arquivo = new File("Cidades.txt");
+        arquivo = new File("Cidades.dat");
 
         if (!arquivo.exists()) {//se o arquivo não existir vai criar ele.
             arquivo.createNewFile();
